@@ -2,9 +2,9 @@
 
 set -e
 TAILSCALE_DIR="/opt/tailscale-bin"
-mkdir -p $TAILSCALE_DIR
+mkdir -p ${TAILSCALE_DIR}
 
-if [ ! -f $TAILSCALE_DIR/tailscaled ]; then
+if [ ! -f ${TAILSCALE_DIR}/tailscaled ]; then
     arch=`uname -m`
     if [ "$arch" == "mips" ]; then
         endianness=`echo -n I | hexdump -o | awk '{ print (substr($2,6,1)=="1") ? "le" : ""; exit }'`
@@ -27,14 +27,14 @@ if [ ! -f $TAILSCALE_DIR/tailscaled ]; then
 
     echo "Downloading Tailscale ${version} .."
 
-    echo -e "tailscale_${version}/tailscaled" > $TAILSCALE_DIR/tailscale_${version}_files.txt
+    echo -e "tailscale_${version}/tailscaled" > ${TAILSCALE_DIR}/tailscale_${version}_files.txt
 
-    wget -O- https://pkgs.tailscale.com/stable/tailscale_${version}.tgz | tar x -zvf - -C $TAILSCALE_DIR -T $TAILSCALE_DIR/tailscale_${version}_files.txt
+    wget -O- https://pkgs.tailscale.com/stable/tailscale_${version}.tgz | tar x -zvf - -C ${TAILSCALE_DIR} -T ${TAILSCALE_DIR}/tailscale_${version}_files.txt
 
-    mv $TAILSCALE_DIR/tailscale_$version/* $TAILSCALE_DIR
-    rm -rf $TAILSCALE_DIR/tailscale_${version}*
+    mv ${TAILSCALE_DIR}/tailscale_$version/* ${TAILSCALE_DIR}
+    rm -rf ${TAILSCALE_DIR}/tailscale_${version}*
 
     echo "Done!"
 fi
 
-$TAILSCALE_DIR/tailscaled "$@"
+${TAILSCALE_DIR}/tailscaled "$@"
